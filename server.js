@@ -12,8 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 // AngelOne API Credentials (from .env file)
-const API_KEY = process.env.ANGELONE_API_KEY;
-const CLIENT_ID = process.env.ANGELONE_CLIENT_ID;
+const API_KEY = process.env.ANGELONE_API_KEY; // hRrOj1uc
+const CLIENT_ID = process.env.ANGELONE_CLIENT_ID; // A605365
 
 // Endpoint to fetch live market price
 app.get('/get-price', async (req, res) => {
