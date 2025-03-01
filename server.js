@@ -24,7 +24,7 @@ app.get('/get-price', async (req, res) => {
 
     try {
         // Fetch live price from Alpha Vantage API
-        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${shareName}.BSE&apikey=${API_KEY}`;
+        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${shareName}.BO&apikey=${API_KEY}`;
         const response = await axios.get(url);
 
         console.log("API Response:", response.data); // Log the API response for debugging
@@ -41,9 +41,4 @@ app.get('/get-price', async (req, res) => {
         console.error('Error fetching price:', error);
         res.status(500).json({ error: 'Failed to fetch market price', details: error.message });
     }
-});
-
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
 });
