@@ -33,11 +33,13 @@ app.get('/get-price', async (req, res) => {
             const price = response.data['Global Quote']['05. price'];
             res.json({ shareName, price });
         } else {
-            res.status(500).json({ error: 'Invalid API response' });
+            // Log the error if the API response is invalid
+            console.error("Invalid API response:", response.data);
+            res.status(500).json({ error: 'Invalid API response', details: response.data });
         }
     } catch (error) {
         console.error('Error fetching price:', error);
-        res.status(500).json({ error: 'Failed to fetch market price' });
+        res.status(500).json({ error: 'Failed to fetch market price', details: error.message });
     }
 });
 
@@ -45,4 +47,3 @@ app.get('/get-price', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
-
