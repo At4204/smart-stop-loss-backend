@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
@@ -6,11 +7,14 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-const API_KEY = process.env.QK40O3YIC2MVZQMN; // Your Alpha Vantage API key
+// Alpha Vantage API Key
+const API_KEY = 'QK40O3YIC2MVZQMN'; // Your Alpha Vantage API key
 
+// Endpoint to fetch live market price
 app.get('/get-price', async (req, res) => {
     const { shareName } = req.query;
 
@@ -19,15 +23,25 @@ app.get('/get-price', async (req, res) => {
     }
 
     try {
-        const response = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${shareName}.BSE&apikey=${API_KEY}`);
-        const price = response.data['Global Quote']['05. price'];
-        res.json({ shareName, price });
+        // Fetch live price from Alpha Vantage API
+        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${shareName}.BSE&apikey=${API_KEY}`;
+        const response = await axios.get(url);
+
+        console.log("API Response:", response.data); // Log the API response for debugging
+
+        if (response.data['Global Quote']) {
+            const price = response.data['Global Quote']['05. price'];
+            res.json({ shareName, price });
+        } else {
+            res.status(500).json({ error: 'Invalid API response' });
+        }
     } catch (error) {
         console.error('Error fetching price:', error);
         res.status(500).json({ error: 'Failed to fetch market price' });
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
